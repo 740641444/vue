@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="vue.js"></script>
+</head>
+<style>
+
+  *{
+    padding: 0;margin: 0;list-style: none;
+  }
+.box{
+  width: 300px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.8);
+  margin: 0 auto;
+  text-align: center;
+  color: #efefef;
+  padding:18px;
+  line-height: 30px;
+}
+  .list{
+    margin: 16px 0;
+  }
+  .list>li{
+    padding:0 40px;
+    text-align: left;
+  }
+  .wancheng{
+    display: inline-block;
+    width: 5%;height: 12px;
+    border-radius: 50%;
+    border:1px solid #ffffff;
+    cursor: pointer;
+    transition: all 0.8s ease;
+  }
+  .con{
+    display: inline-block;
+    padding: 0 10px;
+    width: 60%;
+  }
+  .del{
+    width: 15%;height: 22px;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    padding: 3px 5px;
+    cursor: pointer;
+    transition: all 0.8s ease;
+  }
+  .del:hover{
+    background: rgba(240,240,240,0.8);
+    color: purple;
+  }
+  .wcx{
+    background: #ffffff;
+  }
+
+</style>
+
+
+<body>
+<div class="box" >
+  输入条目：<input type="text" v-on:keydown.13="shuru()" v-model="title"><br>
+  <input type="radio" name="tiaomu" checked v-on:click="leixing(1)">全部条目
+  <input type="radio" name="tiaomu" v-on:click="leixing(2)">完成条目
+  <input type="radio" name="tiaomu" v-on:click="leixing(3)">未完成条目
+  <ul class="list">
+    <li v-for="i in arrall" v-if="state=='all'"><span class="wancheng" v-bind:class="{wcx:i.state==1}" @click="wancheng(i.id,i.state)"></span><span class="con">{{i.title}}</span> <span class="del" v-on:click="del(i.id)">删除</span></li>
+    <li v-for="i in arrwancheng" v-if="state=='wancheng'"><span class="wancheng" v-bind:class="{wcx:i.state==1}" @click="wancheng(i.id,i.state)"></span><span class="con">{{i.title}}</span> <span class="del" v-on:click="del(i.id)">删除</span></li>
+    <li v-for="i in arrweiwan" v-if="state=='weiwan'"><span class="wancheng" v-bind:class="{wcx:i.state==1}" @click="wancheng(i.id,i.state)"></span><span class="con">{{i.title}}</span> <span class="del" v-on:click="del(i.id)">删除</span></li>
+  </ul>
+</div>
+</body>
+</html>
+<script>
+
+  new Vue({
+      el:".box",
+      data:{
+          arrall:[],
+          arrwancheng:[],
+          arrweiwan:[],
+          title:"",
+          state:"all"
+      },
+      methods:{
+          shuru(){
+              var id=Math.random()+new Date().getTime();
+              var obj={id:id,title:this.title,state:0};
+              this.arrall.push(obj);
+              this.arrweiwan.push(obj);
+          },
+          del(id){
+              var that=this;
+              console.log(id)
+              this.arrall.forEach(function (obj,index) {
+                  if(id==obj.id){
+                      console.log("arrall")
+                      that.arrall.splice(index,1);
+                  }
+              })
+              this.arrwancheng.forEach(function (obj,index) {
+                  if(id==obj.id){
+                      console.log("wancheng")
+                      that.arrwancheng.splice(index,1);
+                  }
+              })
+              this.arrweiwan.forEach(function (obj,index) {
+                  if(id==obj.id){
+                      console.log("weiwan")
+                      that.arrweiwan.splice(index,1);
+                  }
+              })
+          },
+          wancheng(id,state){
+              var that=this;
+              console.log(id)
+              this.arrall.forEach(function (obj,index) {
+                  if(id==obj.id){
+                      obj.state=1;
+                      that.arrweiwan.splice(index,1);
+                      that.arrwancheng.push(obj);
+                  }
+              })
+              this.arrweiwan.forEach(function (obj,index) {
+                  if(id==obj.id){
+                      obj.state=1;
+                      that.arrweiwan.splice(index,1);
+                  }
+              })
+          },
+          leixing(leixing){
+              if(leixing==1){
+                  this.state="all"
+              }else if(leixing==2){
+                  this.state="wancheng"
+              }else if(leixing==3){
+                  this.state="weiwan"
+              }
+          }
+      },
+      computed:{
+
+      }
+  })
+
+</script>
