@@ -93,33 +93,28 @@
           },
           del(id){
               var that=this;
-              console.log(id)
               this.arrall.forEach(function (obj,index) {
                   if(id==obj.id){
-                      console.log("arrall")
                       that.arrall.splice(index,1);
                   }
               })
               this.arrwancheng.forEach(function (obj,index) {
                   if(id==obj.id){
-                      console.log("wancheng")
                       that.arrwancheng.splice(index,1);
                   }
               })
               this.arrweiwan.forEach(function (obj,index) {
                   if(id==obj.id){
-                      console.log("weiwan")
                       that.arrweiwan.splice(index,1);
                   }
               })
           },
           wancheng(id,state){
               var that=this;
-              console.log(id)
               this.arrall.forEach(function (obj,index) {
                   if(id==obj.id){
                       obj.state=1;
-                      that.arrweiwan.splice(index,1);
+                      that.arrall.splice(index,1);
                       that.arrwancheng.push(obj);
                   }
               })
